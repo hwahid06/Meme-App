@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.meme-card {
+  border: 2px solid rgb(95, 92, 92);
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.meme-container {
+  background-color: darkgray;
+}
