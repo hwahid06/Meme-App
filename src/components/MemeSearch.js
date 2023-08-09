@@ -5,7 +5,6 @@ import Meme from "./Meme";
 import Pagination from "./Pagination";
 import { Spinner } from 'react-bootstrap';
 
-
 const MemeSearch = () => {
 	const [searchTerm, setSearchTerm] = useState('') //state for search term
 	const [meme, setMeme] = useState([]) //state for memes
@@ -13,7 +12,6 @@ const MemeSearch = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const memesPerPage = 24;
     const [loading, setLoading] = useState(true); //state for loading spinner
-
 
 	useEffect(() => {
 		//fetch memes
@@ -34,7 +32,6 @@ const MemeSearch = () => {
 	const filteredMeme = meme.filter((meme) =>
 		meme.name.toLowerCase().includes(searchTerm.toLowerCase())
 	)
-	// console.log(filteredMeme)
 
     //calculate the starting and ending index of memes for current page
     const indexOfLastMeme = currentPage * memesPerPage;
@@ -50,8 +47,7 @@ const MemeSearch = () => {
     const goToNextPage = () => {
         setCurrentPage((prevPage) => prevPage + 1);
     };
-
-
+	
 	//function to render the appropriate error message or meme list
 	const renderMemesOrMessage = () => {
         //check if there is an API error
@@ -73,7 +69,7 @@ const MemeSearch = () => {
 					<div className='row'>
 						{currentMemes.map((meme) => (
 							<div key={meme.id} className='col-sm-6 col-md-4 col-lg-3 mb-3'>
-								<Meme name={meme.name} url={meme.url} />
+								<Meme id={meme.id} name={meme.name} url={meme.url} />
 							</div>
 						))}
 					</div>
@@ -95,7 +91,7 @@ const MemeSearch = () => {
 					<div className='input-group'>
 						<input
 							type='search'
-							class='form-control me-3'
+							className='form-control me-3'
 							placeholder='Search Memes'
 							aria-label='Search'
 							value={searchTerm}
