@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { Modal, Button } from "react-bootstrap"
+import { saveAs } from "file-saver";
 
 const Meme = ({ name, url, id }) => {
 
@@ -49,10 +50,7 @@ const Meme = ({ name, url, id }) => {
 	//function for downloading meme
 	const handleDownload = () => {
 		if (customMemeUrl) {
-			const link = document.createElement('a')
-			link.href = editedUrl
-			link.download = 'customMeme'
-			link.click()
+			saveAs(editedUrl)
 		}
 	};
 
@@ -104,7 +102,7 @@ const Meme = ({ name, url, id }) => {
 						</Button>
 
 						<Button className="editButton" variant='dark' onClick={handleCustomize}>
-							Edit now
+							Apply Customization
 						</Button>
 						
 						<Button className="downloadButton" variant='dark' onClick={handleDownload}>
