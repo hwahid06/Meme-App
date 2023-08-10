@@ -64,54 +64,53 @@ const Meme = ({ name, url, id }) => {
 			<div className='card-body mt-2'>
 				<h5 className='card-title'>{name}</h5>
 			</div>
-			<>
-				<div className='mt-2'>
-					<Button variant='dark' onClick={handleShow}>
-						Customize Meme
+			
+			<div className='mt-2'>
+				<Button variant='dark' onClick={handleShow}>
+					Customize Meme
+				</Button>
+			</div>
+
+			<Modal show={showModal} onHide={handleClose}>
+				<Modal.Header closeButton>
+					<Modal.Title>{name}</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					
+					<img src={editedUrl} alt={name} style={{ width: '100%' }} />
+					
+					<div className='mt-2'>
+						<input
+							type='text'
+							value={text0}
+							onChange={(e) => setText0(e.target.value)}
+							placeholder='Phrase 1'
+						/>
+					</div>
+					<div className='mt-2'>
+						<input
+							type='text'
+							value={text1}
+							onChange={(e) => setText1(e.target.value)}
+							placeholder='Phrase 2'
+						/>
+					</div>
+				</Modal.Body>
+				<Modal.Footer className="d-flex justify-content-center align-items-center">
+					<Button className="modalCloseButton" variant='dark' onClick={handleClose}>
+						Close
 					</Button>
-				</div>
 
-				<Modal show={showModal} onHide={handleClose}>
-					<Modal.Header closeButton>
-						<Modal.Title>{name}</Modal.Title>
-					</Modal.Header>
-					<Modal.Body>
-						
-							<img src={editedUrl} alt={name} style={{ width: '100%' }} />
-						
-						<div className='mt-2'>
-							<input
-								type='text'
-								value={text0}
-								onChange={(e) => setText0(e.target.value)}
-								placeholder='Phrase 1'
-							/>
-						</div>
-						<div className='mt-2'>
-							<input
-								type='text'
-								value={text1}
-								onChange={(e) => setText1(e.target.value)}
-								placeholder='Phrase 2'
-							/>
-						</div>
-					</Modal.Body>
-					<Modal.Footer className="d-flex justify-content-center align-items-center">
-						<Button className="modalCloseButton" variant='dark' onClick={handleClose}>
-							Close
-						</Button>
-
-						<Button className="editButton" variant='dark' onClick={handleCustomize}>
-							Apply Customization
-						</Button>
-						
-						<Button className="downloadButton" variant='dark' onClick={handleDownload}>
-							Download Meme
-						</Button>
-						
-					</Modal.Footer>
-				</Modal>
-			</>
+					<Button className="editButton" variant='dark' onClick={handleCustomize}>
+						Apply Customization
+					</Button>
+					
+					<Button className="downloadButton" variant='dark' onClick={handleDownload}>
+						Download Meme
+					</Button>
+					
+				</Modal.Footer>
+			</Modal>
 		</div>
 	)
 };

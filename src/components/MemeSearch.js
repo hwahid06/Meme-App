@@ -1,70 +1,62 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import fetchMemes from "./API";
-import Meme from "./Meme";
-import Pagination from "./Pagination";
-import { Spinner } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react'
+import fetchMemes from './API'
+import Meme from './Meme'
+import Pagination from './Pagination'
+import { Spinner } from 'react-bootstrap'
 
 const MemeSearch = () => {
-	const [searchTerm, setSearchTerm] = useState('') //state for search term
-	const [meme, setMeme] = useState([]) //state for memes
-	const [apiError, setApiError] = useState(false) //state to track API call error
-    const [currentPage, setCurrentPage] = useState(1);
-    const memesPerPage = 24;
-    const [loading, setLoading] = useState(true); //state for loading spinner
+	const [searchTerm, setSearchTerm] = useState('') //search term state
+	const [meme, setMeme] = useState([]) //array of memes fetched from api
+	const [apiError, setApiError] = useState(false) //tracks api error during fetch
+	const [currentPage, setCurrentPage] = useState(1) //state for current page
+	const memesPerPage = 24 //# of memes per page to display
+	const [loading, setLoading] = useState(true) //state for spinner
+	const [filteredMeme, setFilteredMeme] = useState([]) // New state for filtered memes
 
 	useEffect(() => {
-		//fetch memes
 		fetchMemes()
 			.then((meme) => {
 				setMeme(meme)
-				setApiError(false) //if api succeeds, reset error state
-                setLoading(false) //when data loads, spinner is set to false
+				setApiError(false)
+				setLoading(false)
 			})
 			.catch((error) => {
-				// console.log(error)
-				setApiError(true) //if api call fails, set error state to true
-                setLoading(false) //if data loads, set loading to false
+				setApiError(true)
+				setLoading(false)
 			})
 	}, [])
 
-	//filter memes based on search term
-	const filteredMeme = meme.filter((meme) =>
-		meme.name.toLowerCase().includes(searchTerm.toLowerCase())
-	)
+	useEffect(() => {
+		// Filter memes based on search term
+		const filtered = meme.filter((meme) =>
+			meme.name.toLowerCase().includes(searchTerm.toLowerCase())
+		)
+		setFilteredMeme(filtered)
+		setCurrentPage(1) // Reset current page when search term changes
+	}, [searchTerm, meme])
 
-    //calculate the starting and ending index of memes for current page
-    const indexOfLastMeme = currentPage * memesPerPage;
-    const indexOfFirstMeme = indexOfLastMeme - memesPerPage;
-    const currentMemes = filteredMeme.slice(indexOfFirstMeme, indexOfLastMeme);
+	// Calculate the starting and ending index of memes for current page
+	const indexOfLastMeme = currentPage * memesPerPage
+	const indexOfFirstMeme = indexOfLastMeme - memesPerPage
+	const currentMemes = filteredMeme.slice(indexOfFirstMeme, indexOfLastMeme)
 
-    //function to handle the prev page click
-    const goToPreviousPage = () => {
-        setCurrentPage((prevPage) => prevPage - 1);
-    };
+	const goToPreviousPage = () => {
+		setCurrentPage((prevPage) => prevPage - 1)
+	}
 
-    //function to handle the next page click
-    const goToNextPage = () => {
-        setCurrentPage((prevPage) => prevPage + 1);
-    };
-	
-	//function to render the appropriate error message or meme list
+	const goToNextPage = () => {
+		setCurrentPage((prevPage) => prevPage + 1)
+	}
+
 	const renderMemesOrMessage = () => {
-        //check if there is an API error
 		if (apiError) {
 			return (
-				<div>
-					<p>
-						Oops! There was a problem fetching memes. Please try again later.
-					</p>
-				</div>
+				<p>Oops! There was a problem fetching memes. Please try again later.</p>
 			)
 		} else {
-            //check if filtered memes are empty
 			if (filteredMeme.length === 0) {
 				return <p>No memes found. Try searching with different keywords.</p>
 			} else {
-                //Render memes in a row
 				return (
 					<div className='row'>
 						{currentMemes.map((meme) => (
